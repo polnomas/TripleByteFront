@@ -78,12 +78,66 @@ yarn dev
 
 🔹**Registro e inicio de sesión:** los usuarios pueden registrarse como usuario normal o admin, y, al iniciar sesión, reciben un JWT.
 
-🔹**Protección de rutas:**
-- Sólo usuarios autenticados pueden jugar.
-- Admins acceden a rutas exclusivas como el historial y los reportes.
-- El JWT se envía en el header `Authorization` en cada solicitud protegida.
-
 🔹**Validación de tokens:** el backend valida el JWT en cada endpoint protegido y el acceso es denegado si el token es inválido o expiró.
+
+---
+
+## 🔐 Protección de Rutas
+
+Este proyecto implementa un sistema de autenticación y autorización basado en **tokens JWT**, cumpliendo con los siguientes principios de seguridad:
+
+### ✅ Reglas de acceso
+
+- 🔒 **Sólo los usuarios autenticados** pueden acceder a rutas protegidas como:
+  - `JUGAR` (`/game`, `/game/gamecreate`, `/game/gamejoin`, `/play`)
+  - `HISTORIAL` (`/game/gamehistory`)
+  - `REPORTES` (`/game/gamereports`)
+
+- 🛡️ **Los administradores** (usuarios con `isAdmin: true`) tienen acceso exclusivo a:
+  - `/game/gamehistory`
+  - `/game/gamereports`
+
+- 🧾 El token **JWT** se guarda en `localStorage` en el frontend, y se **adjunta en el header `Authorization`** con cada request a rutas protegidas (`Bearer <token>`).
+
+---
+
+### 🔄 Redirección al login si no hay token
+
+Las vistas protegidas verifican, mediante `useEffect`, si existe un token y un usuario guardado en `localStorage`. Si no están presentes, el usuario es **redirigido automáticamente a `/login`**, previniendo el acceso a secciones restringidas.
+
+```js
+useEffect(() => {
+  const token = localStorage.getItem('token')
+  const user = JSON.parse(localStorage.getItem('user'))
+
+  if (!token || !user) {
+    navigate('/login')
+  }
+}, [])
+
+---
+
+### 🔐 Protección de rutas manuales
+
+Aunque técnicamente es posible acceder manualmente escribiendo una ruta en el navegador (por ejemplo `/game/gamejoin` o `/game/gamereports`), si el usuario **no está autenticado**, el frontend se encarga de:
+
+- 🚫 Evitar la carga de contenido.
+- 🔄 Redirigir automáticamente al login.
+- 🔐 Proteger las llamadas a la API enviando el token sólo cuando corresponde.
+
+Esto asegura que **no se pueda interactuar con el backend ni visualizar contenido restringido** sin autenticación.
+
+---
+
+### ⚠️ Sobre `/play`
+
+Debido a que `/play` requiere un estado de partida (`gameState`) que se transmite mediante navegación con `location.state`, **no es posible acceder directamente escribiendo `/play` en el navegador**, ya que el componente depende de esos datos previos.
+
+En consecuencia:
+
+- Si el usuario intenta acceder manualmente, la vista **no funcionará correctamente** (no hay estado de juego).
+- Esto **refuerza la seguridad por navegación guiada**: el usuario sólo puede llegar a `/play` a través del flujo adecuado (crear o unirse a una sala).
+
 
 ---
 

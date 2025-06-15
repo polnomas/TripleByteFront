@@ -12,6 +12,14 @@ function GameCreate() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([])
   useEffect(() => {
+    const token = localStorage.getItem('token')
+    const user = JSON.parse(localStorage.getItem('user'))
+  
+    if (!token || !user) {
+      navigate('/login')
+    }
+  }, [])
+  useEffect(() => {
     const createRoom = async () => {
       try {
         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/play/initialize`, { ownersUserId: user.id })

@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import '../../assets/styles/GameHistory.css'
 
 function GameHistory() {
+  const navigate = useNavigate()
   const partidas = [
     { id: 'AAA111', jugadores: ['Sofía', 'Pablo', 'Tere'], ganador: 'Sofía' },
     { id: 'BBB222', jugadores: ['Pablo', 'Sofía'], ganador: 'Pablo' },
@@ -29,6 +31,15 @@ function GameHistory() {
       }
     }
     fetchProtected()
+  }, [])
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const user = JSON.parse(localStorage.getItem('user'))
+  
+    if (!token || !user) {
+      navigate('/login')
+    }
   }, [])
 
   return (

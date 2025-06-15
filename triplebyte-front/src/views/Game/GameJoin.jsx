@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../../assets/styles/GameJoin.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -9,6 +9,14 @@ function GameJoin() {
   const user = JSON.parse(localStorage.getItem('user'))
   const navigate = useNavigate()
 
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const user = JSON.parse(localStorage.getItem('user'))
+  
+    if (!token || !user) {
+      navigate('/login')
+    }
+  }, [])
   const handleJoin = async () => {
     if (roomId.trim() !== '') {
       console.log(user.id)

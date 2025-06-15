@@ -19,7 +19,6 @@ body {
   gap: 1rem;
   box-sizing: border-box;
   overflow: auto;
-  flex-shrink: 0;
 }
 
 /* Jugadores */
@@ -47,10 +46,10 @@ body {
 
 /* Estilos generales para cartas y pilas */
 .card-base {
-  width: 48px;
-  height: 72px;
-  font-size: 16px;
-  border-radius: 8px;
+  width: 18px;
+  height: 28px;
+  font-size: 14px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,22 +64,18 @@ body {
 /* Colores de cartas */
 .card-skipbo {
   background-color: #f6ad55;
-  border: 2px solid black;
 }
 
 .card-red {
   background-color: #f56565;
-  border: 2px solid black;
 }
 
 .card-green {
   background-color: #48bb78;
-  border: 2px solid black;
 }
 
 .card-ability {
   background-color: #4299e1;
-  border: 2px solid black;
 }
 
 /* Pilas */
@@ -99,6 +94,7 @@ body {
   background-color: #805ad5;
   border: 2px solid #4c51bf;
 }
+
 
 
 /* Pilas centrales */

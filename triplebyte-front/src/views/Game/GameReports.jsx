@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import '../../assets/styles/GameHistory.css'
 
 function GameReports() {
+  const navigate = useNavigate()
   const reportes = [
     {
       id: 'RPT001',
@@ -42,6 +44,15 @@ function GameReports() {
       }
     }
     fetchProtected()
+  }, [])
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const user = JSON.parse(localStorage.getItem('user'))
+  
+    if (!token || !user) {
+      navigate('/login')
+    }
   }, [])
 
   return (
