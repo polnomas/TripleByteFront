@@ -1,5 +1,5 @@
 import './assets/styles/App.css'
-import Navbar from './components/Navbar'
+import Navbar from './components/NavBar'
 import Routing from './routing'
 import { useLocation } from 'react-router-dom'
 
