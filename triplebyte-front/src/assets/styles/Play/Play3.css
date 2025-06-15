@@ -1,0 +1,123 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Contenedor principal */
+.play-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Fila superior con dos jugadores en línea */
+.top-players {
+  display: flex;
+  justify-content: center;
+  gap: 40px; /* espacio entre los dos jugadores */
+  margin-bottom: 20px;
+}
+
+/* Jugador (arriba o abajo) */
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Nombre del jugador */
+.player-name {
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+/* Fila de cartas o pilas */
+.card-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+/* Cartas */
+.card {
+  width: 36px;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  font-size: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Colores de carta */
+.card-skipbo {
+  background-color: #f6ad55;
+}
+
+.card-red {
+  background-color: #f56565;
+}
+
+.card-green {
+  background-color: #48bb78;
+}
+
+/* Pilas base */
+.pile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+/* Pila de inicio (más grande) */
+.pile-start {
+  width: 72px;
+  height: 108px;
+  border: 3px solid #3182ce;
+  background-color: #f56565;
+}
+
+/* Pila de descarte */
+.pile-discard {
+  width: 72px;
+  height: 108px;
+  border: 2px dashed #718096;
+}
+
+/* Pilas centrales de construcción */
+.center-piles {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  /* para separar visualmente las filas */
+  align-self: center;
+}
+
+/* Pilas de construcción */
+.pile-build {
+  width: 72px;
+  height: 108px;
+  border: 2px solid #805ad5;
+}
+
+/* Jugador abajo (fila inferior) */
+.player-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

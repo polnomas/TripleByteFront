@@ -1,0 +1,134 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #e2e8f0;
+}
+
+/* Contenedor principal del juego */
+.play-container {
+  background-color: #fff;
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-sizing: border-box;
+  overflow: auto;
+  flex-shrink: 0;
+}
+
+/* Jugadores */
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Nombre del jugador */
+.player-name {
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+/* Fila de cartas/pilas */
+.card-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Estilos generales para cartas y pilas */
+.card-base {
+  width: 48px;
+  height: 72px;
+  font-size: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Colores de cartas */
+.card-skipbo {
+  background-color: #f6ad55;
+  border: 2px solid black;
+}
+
+.card-red {
+  background-color: #f56565;
+  border: 2px solid black;
+}
+
+.card-green {
+  background-color: #48bb78;
+  border: 2px solid black;
+}
+
+.card-ability {
+  background-color: #4299e1;
+  border: 2px solid black;
+}
+
+/* Pilas */
+.pile-start {
+  background-color: #f56565;
+  border: 2px solid #3182ce;
+}
+
+.pile-discard {
+  background-color: #a0aec0;
+  border: 2px dashed #718096;
+}
+
+.pile-build {
+  color: black;
+  background-color: #805ad5;
+  border: 2px solid #4c51bf;
+}
+
+
+/* Pilas centrales */
+.center-piles {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.exit-button {
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: #3182ce;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.exit-button:hover {
+  background-color: #225ea8;
+}
+
+.play-wrapper {
+  display: flex;
+  align-items: flex-start; 
+  gap: 20px; 
+  padding: 20px;
+  justify-content: center; 
+}

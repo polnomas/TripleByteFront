@@ -1,0 +1,94 @@
+.gamecreate-container {
+  max-width: 700px;
+  margin: 4rem auto;
+  padding: 2.5rem;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  text-align: center;
+}
+
+.gamecreate-container h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.room-id {
+  margin-bottom: 2rem;
+}
+
+.room-id h2 {
+  margin: 0.5rem 0;
+  font-size: 1.3rem;
+  font-weight: normal;
+}
+
+.room-id strong {
+  font-weight: bold;
+  color: #000;
+}
+
+.gamecreate-container h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+/* Contenedores de selección con espacio abajo */
+.cards-selection,
+.players-selection {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem; /* separación entre secciones */
+}
+
+.cards-selection button,
+.players-selection button {
+  background-color: #e0e0e0;
+  color: #000;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  min-width: 120px;
+  transition: all 0.3s ease;
+}
+
+.cards-selection button:hover,
+.players-selection button:hover {
+  border-color: #333;
+  background-color: #d0e7ff;
+}
+
+.cards-selection button.selected,
+.players-selection button.selected {
+  background-color: #333;
+  color: #fff;
+  border-color: #333;
+  box-shadow: 0 0 8px rgba(51, 51, 51, 0.7);
+}
+
+.confirmation-section {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+}
+
+.start-button {
+  margin-top: 1rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 0.9rem 1.6rem;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+  background-color: #555;
+}
