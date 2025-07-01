@@ -42,5 +42,16 @@
 }
 
 .main-content {
-  padding-top: 80px; /* ajusta este valor según la altura de tu navbar */
+  padding-top: 10px; /* ajusta este valor según la altura de tu navbar */
+}
+
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('/fondo.jpg') center/cover no-repeat;
+  opacity: 0.3; /* Solo el fondo es translúcido */
+  z-index: -1;
+  pointer-events: none;
 }

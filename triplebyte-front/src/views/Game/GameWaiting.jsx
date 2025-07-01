@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import '../../assets/styles/GameCreate.css'
 import axios from 'axios'
-import { io } from 'socket.io-client'
+import SocketContext from '../../SocketContext'
+import '../../assets/styles/GameWaiting.css'
+
 function GameWaiting() {
   const user = JSON.parse(localStorage.getItem('user'))
   const navigate = useNavigate()
@@ -10,27 +12,32 @@ function GameWaiting() {
   const [gameId, isOwner] = [location.state.gameId, location.state.isOwner]
   const [users, setUsers] = useState(location.state.users)
 
+  const socket = useContext(SocketContext)
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_BACKEND_URL)
-    socket.emit('joinGame', gameId)
-    socket.on('newPlayer', (newUsers) => {
+    if (!socket) return
+    socket.emit('joinGame', {gameId, userId: user.id})
+    const handleNewPlayer = (newUsers) => {
       console.log('New player joined:', newUsers)
       setUsers(newUsers)
-    })
-    socket.on('gameStarted', (gameData) => {
+    }
+    socket.on('newPlayer', handleNewPlayer)
+    const handleGameStarted = (gameData) => {
       console.log('Game started:', gameData)
       navigate(`/play/play2`, { state: gameData })
-    })
-    return () => {
-      socket.disconnect()
     }
-  }, [gameId])
+    socket.on('gameStarted', handleGameStarted)
+    return () => {
+      socket.off('newPlayer', handleNewPlayer)
+      socket.off('gameStarted', handleGameStarted)
+    }
+  }, [socket, gameId, navigate, user.id])
+  
   return (
-    <div>
-      <h1>Waiting for players...</h1>
-      <h2>Room ID: {gameId}</h2>
-        <h3>Players in the room:</h3>
-        <p>Players: {users.length}</p>
+    <div className='waiting-container'>
+      <h1>Esperando a los jugadores...</h1>
+      <h2>Espera a que los demás jugadores se unan y que el dueño de la sala empiece la partida.</h2>
+      <h2><strong>ID sala:</strong> {gameId}</h2>
+      <h2><strong>Jugadores en la Sala:</strong> {users.length}</h2>
     </div>
   )
 }

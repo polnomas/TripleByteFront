@@ -1,0 +1,297 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f4f6fa;
+  color: #222;
+}
+
+/* Contenedor principal: botón y tablero en fila */
+.play-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
+  padding: 30px 0;
+  min-height: 100vh;
+}
+
+
+.side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 160px;
+}
+
+.side.left {
+  align-items: flex-end;
+}
+
+.side.right {
+  align-items: flex-start;
+}
+
+.turn-indicator {
+  background: #ffe082;
+  color: #333;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  margin-bottom: 1rem;
+}
+
+/* Botón salir al lado del tablero */
+.exit-button {
+  align-self: flex-start;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 22px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  height: fit-content;
+  margin: 0;
+}
+.exit-button:hover {
+  background: #c0392b;
+}
+
+/* Tablero */
+.play-container {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(44,62,80,0.10);
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  min-width: 480px;
+  max-width: 600px;
+  opacity: 1;
+}
+
+/* Jugadores */
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.player.opponent {
+  opacity: 0.7;
+}
+
+/* Nombre del jugador */
+.player-name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 6px;
+  color: #34495e;
+}
+
+/* Filas de cartas */
+.card-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 5px;
+  justify-content: center;
+}
+
+/* Pilas de construcción al centro */
+.center-piles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 18px 0;
+  height: 84px;
+}
+
+/* Cartas base */
+.card-base {
+  border-radius: 8px;
+  background: #e1e8ed;
+  box-shadow: 0 2px 6px rgba(44,62,80,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #34495e;
+  border: 2px solid #bfc9d1;
+  transition: box-shadow 0.2s, border 0.2s;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-base:hover {
+  box-shadow: 0 4px 16px rgba(44,62,80,0.13);
+  border: 2px solid #4a90e2;
+}
+
+
+/* Cartas del oponente (más chicas, relación 5:7) */
+.opponent-card {
+  width: 40px;
+  height: 56px;
+  font-size: 12px;
+}
+
+/* Cartas normales (jugador y centro, más grandes, relación 5:7) */
+.card-base:not(.opponent-card) {
+  width: 60px;
+  height: 84px; 
+  font-size: 20px;
+}
+
+/* Tamaño para cartas del oponente */
+.card-base.opponent-card,
+.card-base.pile-start.opponent-card,
+.card-base.pile-discard.opponent-card {
+  width: 40px;
+  height: 56px;
+  font-size: 12px;
+}
+
+/* Tamaño para pilas normales */
+.card-base.pile-start:not(.opponent-card),
+.card-base.pile-discard:not(.opponent-card) {
+  width: 60px;
+  height: 84px;
+  font-size: 20px;
+}
+
+.card-base.card-skipbo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tipos de cartas */
+.card-ability {
+  background: linear-gradient(135deg, #f7cac9 0%, #92a8d1 100%);
+}
+.card-red {
+  background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+  color: #fff;
+}
+.pile-start {
+  background: #ffeaa7;
+  border: 2px solid #fdcb6e;
+}
+.pile-discard {
+  background: #dfe6e9;
+  border: 2px dashed #636e72;
+}
+.pile-build {
+  background: #b2bec3;
+  border: 2px solid #636e72;
+}
+.card-skipbo {
+  background: #00b894;
+  color: #fff;
+  font-size: 18px;
+  border: 2px solid #00b894;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.card-skipbo:hover {
+  background: #019875;
+}
+
+/* Carta seleccionada */
+.card-base.card-red.selected {
+  border: 2px solid #ffeb3b;
+  box-sizing: border-box;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .play-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .play-container {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 10px 2vw;
+  }
+  .card-base:not(.opponent-card) {
+    width: 38px;
+    height: 54px;
+    font-size: 14px;
+  }
+  .opponent-card {
+    width: 28px;
+    height: 40px;
+    font-size: 10px;
+  }
+  .center-piles {
+    gap: 4px;
+  }
+}
+
+.selected {
+  box-shadow: 0 0 0 2px #2196f3, 0 0 6px 2px #ffe082;
+  border-radius: 8px;
+  z-index: 2;
+  transition: box-shadow 0.2s;
+}
+
+
+.game-finished {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  background: #f4f6fa;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(44,62,80,0.10);
+  padding: 3rem 2rem;
+  margin: 4rem auto;
+  max-width: 480px;
+  gap: 2rem;
+  opacity: 1;
+}
+
+.game-finished h2 {
+  color: #34495e;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.game-finished h3 {
+  color: #636e72;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.game-finished .exit-button {
+  background: #e74c3c;
+  color: #f4f6fa;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 1rem;
+  box-shadow: 0 2px 6px rgba(44,62,80,0.07);
+  display: block;
+  margin: 1rem auto 0 auto;
+}
+.game-finished .exit-button:hover {
+  background: #c0392b;
+}

@@ -11,22 +11,6 @@
   overflow: hidden;
 }
 
-.instructions-grid::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: url('/fondo.jpg'); 
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.08;
-  z-index: 0;
-  pointer-events: none;
-}
-
 .instructions-grid h1 {
   font-weight: 900;
   font-size: 2.8rem;

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../../assets/styles/GameCreate.css'
 import axios from 'axios'
-import { io } from 'socket.io-client'
+import SocketContext from '../../SocketContext'
 
 function GameCreate() {
   const user = JSON.parse(localStorage.getItem('user'))
@@ -11,6 +11,7 @@ function GameCreate() {
   const [roomId, setRoomId] = useState(null)
   const navigate = useNavigate();
   const [users, setUsers] = useState([])
+  const createdRef = useRef(false)
   useEffect(() => {
     const token = localStorage.getItem('token')
     const user = JSON.parse(localStorage.getItem('user'))
@@ -20,6 +21,8 @@ function GameCreate() {
     }
   }, [])
   useEffect(() => {
+    if (createdRef.current) return
+    createdRef.current = true
     const createRoom = async () => {
       try {
         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/play/initialize`, { ownersUserId: user.id })
@@ -31,18 +34,20 @@ function GameCreate() {
     }
     createRoom()
   }, [])
+  const socket = useContext(SocketContext)
   useEffect(() => {
-    if (!roomId) return
-    const socket = io(import.meta.env.VITE_BACKEND_URL)
-    socket.emit('joinGame', roomId)
-    socket.on('newPlayer', (newUsers) => {
+    if (!roomId || !socket || !user.id) return
+    socket.emit('joinGame', {gameId: roomId, userId: user.id})
+    const handleNewPlayer = (newUsers) => {
       console.log('New player joined:', newUsers)
       setUsers(newUsers)
-    })
-    return () => {
-      socket.disconnect()
     }
-  }, [roomId])
+    socket.on('newPlayer', handleNewPlayer)
+    return () => {
+      socket.off('newPlayer', handleNewPlayer)
+    }
+  }, [roomId, socket, user.id])
+  
   const handleStartGame = async () => {
     if (cards) {
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/play/start`, {gameId: roomId, ownersUserId: user.id, mainPileSize: cards})

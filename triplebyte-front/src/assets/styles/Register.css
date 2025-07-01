@@ -1,30 +1,14 @@
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: url('/fondo.jpg'); 
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.4; 
-  z-index: 0;
-  pointer-events: none;
-}
-
 .register-container {
-  position: relative; 
+  background-color: #fff;
+  position: relative;
+  z-index: 1; 
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   max-width: 800px;
   margin: 100px auto 2rem auto;
-  padding: 3rem;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
-  z-index: 1; 
 }
 
 .register-container h1 {
@@ -33,18 +17,18 @@ body::before {
   margin-bottom: 2rem;
 }
 
-form {
+.register-container form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-label {
+.register-container label {
   font-weight: 600;
   font-size: 1rem;
 }
 
-input {
+.register-container input {
   padding: 0.75rem 1rem;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -54,12 +38,12 @@ input {
   transition: border-color 0.2s;
 }
 
-input:focus {
+.register-container input:focus {
   outline: none;
   border-color: #666;
 }
 
-button {
+.register-container button {
   margin-top: 2rem;
   padding: 1rem;
   font-size: 1rem;
@@ -72,6 +56,12 @@ button {
   transition: background-color 0.2s;
 }
 
-button:hover {
+.register-container button:hover {
   background-color: #222;
+}
+
+.register-container .error {
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
 }

@@ -1,78 +1,18 @@
+// src/views/Play/Play3.jsx
 import React from 'react'
 import '../../assets/styles/Play/Play3.css'
+import useImage from '../../image_logic/cloudinary_config'
 
-const Play = () => {
-  return (
-    <div className="play-container">
 
-      {/* Fila superior: dos jugadores */}
-      <div className="top-players">
-        <div className="player">
-          <div className="player-name">Nick Jugador 1</div>
-          <div className="card-row">
-            <div className="card card-green">Skip-Bo</div>
-            <div className="card card-green">Skip-Bo</div>
-            <div className="card card-green">Skip-Bo</div>
-            <div className="card card-green">Skip-Bo</div>
-            <div className="card card-green">Skip-Bo</div>
-          </div>
-          <div className="card-row">
-            <div className="pile pile-start">6</div>
-            <div className="pile pile-discard"></div>
-            <div className="pile pile-discard"></div>
-            <div className="pile pile-discard"></div>
-            <div className="pile pile-discard"></div>
-          </div>
-        </div>
+const Play = () => (
+  <div className="play-container">
+    {/* ... tu layout ... */}
 
-        <div className="player">
-          <div className="player-name">Nick Jugador 2</div>
-          <div className="card-row">
-            <div className="card card-green">Skip-Bo</div>
-            <div className="card card-green">Skip-Bo</div>
-            <div className="card card-green">Skip-Bo</div>
-            <div className="card card-green">Skip-Bo</div>
-            <div className="card card-green">Skip-Bo</div>
-          </div>
-          <div className="card-row">
-            <div className="pile pile-start">6</div>
-            <div className="pile pile-discard"></div>
-            <div className="pile pile-discard"></div>
-            <div className="pile pile-discard"></div>
-            <div className="pile pile-discard"></div>
-          </div>
-        </div>
-      </div>
+    {/* 3. Renderiza con <AdvancedImage> */}
+    {useImage('TripleByte/ChatGPT_Image_27_jun_2025_05_43_36_p.m._tqu5mb.png', 60, 84)}
 
-      {/* Pilas de construcción al centro (entre filas) */}
-      <div className="center-piles">
-        <div className="pile pile-build"></div>
-        <div className="pile pile-build"></div>
-        <div className="pile pile-build"></div>
-        <div className="pile pile-build"></div>
-      </div>
+    {/* ... resto de tu layout ... */}
+  </div>
+)
 
-      {/* Fila inferior: tú */}
-      <div className="player player-bottom">
-        <div className="player-name">Yo</div>
-        <div className="card-row">
-          <div className="pile pile-start">6</div>
-          <div className="pile pile-discard"></div>
-          <div className="pile pile-discard"></div>
-          <div className="pile pile-discard"></div>
-          <div className="pile pile-discard"></div>
-        </div>
-        <div className="card-row">
-          <div className="card card-skipbo">Skip-Bo</div>
-          <div className="card card-red">9</div>
-          <div className="card card-red">5</div>
-          <div className="card card-red">12</div>
-          <div className="card card-red">10</div>
-        </div>
-      </div>
-
-    </div>
-  );
-};
-
-export default Play;
+export default Play

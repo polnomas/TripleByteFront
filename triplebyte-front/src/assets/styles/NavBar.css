@@ -19,16 +19,48 @@
 }
 
 .navbar-list li {
-  margin: 0 2rem;
+  margin: 0 1.2rem;
+  display: flex;
+  align-items: center;
 }
 
 .navbar a {
   color: #333;
   text-decoration: none;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  transition: color 0.2s;
 }
 
 .navbar a:hover {
   color: #007bff;
+}
+
+/* Saludo usuario */
+.nav-user {
+  font-size: 1.1rem;
+  color: #555;
+  font-weight: normal;
+  background: #f4f4f4;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* Botón cerrar sesión */
+.navbar-list button {
+  background: #333;
+  color: #f4f4f4;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-left: 0.5rem;
+}
+
+.navbar-list button:hover {
+  background: #222;
 }

@@ -17,7 +17,9 @@ const Play = () => {
             <div className="card card-green">Skip-Bo</div>
           </div>
           <div className="card-row">
-            <div className="pile pile-start">6</div>
+            <div className="pile pile-start">
+              <img src="../../../public/Carta_1_editada.png" alt="Carta 1" />
+            </div>
             <div className="pile pile-discard"></div>
             <div className="pile pile-discard"></div>
             <div className="pile pile-discard"></div>
@@ -49,7 +51,9 @@ const Play = () => {
         <div className="pile pile-build"></div>
         <div className="pile pile-build"></div>
         <div className="pile pile-build"></div>
-        <div className="pile pile-build"></div>
+        <div className="card pile-start">
+              <img src="../../../public/Carta_1_editada.jpg" alt="Carta 1" className="card pile-start" />
+            </div>
       </div>
 
       {/* Fila inferior: otros dos jugadores */}

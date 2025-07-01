@@ -1,120 +1,214 @@
-import {useState, useEffect}  from 'react';
+import { useState, useEffect, useMemo, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import '../../assets/styles/Play/Play2.css';
-import axios from 'axios';
-import React  from 'react';
+import '../../assets/styles/Play/Play2_modificado.css';
+import React from 'react';
+import Handler from './handlers';
+import renderImage from '../../image_logic/cloudinary_config';
+import SocketContext from '../../SocketContext';
 
 const Play = () => {
-  const user = JSON.parse(localStorage.getItem('user'))
-  const navigate = useNavigate()
-  const location = useLocation()
-  const [gameState, setGameState] = useState(location.state)
-  const [playerState, setPlayerState] = useState(null)
-  const fetchMyGameState = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/play/my_status/${gameState.id}/${user.id}`)
-      console.dir(response, {depth: null})
-      await setPlayerState(response.data.data)
-      console.dir(playerState, {depth: null})
-    } catch (error) {
-       console.error('Error fetching game state:', error);
-    }
-  }
+  const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [gameState, setGameState] = useState(null);
+  const [playerState, setPlayerState] = useState(null);
+  const [origin, setOrigin] = useState(null)
+  const [originValue, setOriginValue] = useState(null)
+  const gameId = location.state?.id || localStorage.getItem('gameId');
+
   useEffect(() => {
-    fetchMyGameState()
-  }, [])
-  let oponentIndex = -1
+    if (location.state?.id) {
+      localStorage.setItem('gameId', location.state.id);
+    }
+  }, [location.state]);
+
+  const socket = useContext(SocketContext)
+  const handler = useMemo(() => {
+    if (!socket) return null
+    return new Handler(
+    socket,
+    user.id,
+    gameId,
+    setGameState,
+    setPlayerState,
+    setOrigin,
+    setOriginValue
+  )}, [socket, user.id, gameId]);
+
+  useEffect(() => {
+    if (!handler) return
+    handler.updateGameState();
+    handler.updatePlayerState();
+  }, [handler]);
+
+  useEffect(() => {
+    return () => {
+      handler?.cleanup()
+    }
+  }, [handler])
+
+  if (!gameState) return <div>Cargando...</div>;
+  if (gameState?.status === "finished") {
+  return (
+    <div className="game-finished">
+      <h2>¡El juego ha terminado!</h2>
+      <button className="exit-button" onClick={() => navigate('/')}>
+        Volver al Inicio
+      </button>
+    </div>
+  );
+}
+
+  let oponentIndex = -1;
   for (let i = 0; i < gameState.players.length; i++) {
     if (gameState.players[i].userId !== user.id) {
-      oponentIndex = i
-      break
+      oponentIndex = i;
+      break;
     }
   }
-  const handleDraw = async () => {
-    try {
-      const reqData = {
-        gameId: gameState.id,
-        action: {
-          type: 'draw',
-          userMovingId: user.id
-        }
-      }
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/play/make_a_move`, reqData)
-      console.dir(response, {depth: null})
-      if (response.data.data.cardId) {
-        await fetchMyGameState()
-      }
-    } catch (error) {
-      console.error('Error drawing a card:', error);
-    }
-  }
+
   return (
-    <div className="play-wrapper"> 
-
-      <button className="exit-button" onClick={() => navigate('/')}>
-        Salir del juego
-      </button>
-
+    <div className="play-wrapper">
+      <div className="side left">
+        <div className="turn-indicator">
+          {gameState.players[gameState.currentTurn]?.userId === user.id
+            ? "¡Es tu turno!"
+            : `Turno de: ${gameState.players[gameState.currentTurn]?.userId}`}
+        </div>
+      </div>
       <div className="play-container">
-
         {/* Jugador oponente */}
         <div className="player opponent">
-          <div className="player-name">{gameState.players[oponentIndex].userId}</div>
-
+          <div className="player-name">{gameState.players[oponentIndex]?.userId}</div>
           <div className="card-row">
-            <div className="card-base card-ability">{Object.keys(gameState.players[oponentIndex].skills.content).length === 0 ? 0 : Object.keys(gameState.players[oponentIndex].skills.content)}</div>
-            <div className="card-base card-ability">{Object.keys(gameState.players[oponentIndex].skills.content).length === 0 ? 0 : Object.keys(gameState.players[oponentIndex].skills.content)}</div>
+            {renderImage(
+              gameState.players[oponentIndex]?.skills?.content?.[0] || 0,
+              "card-base card-ability opponent-card"
+            )}
+            {renderImage(
+              gameState.players[oponentIndex]?.skills?.content?.[1] || 0,
+              "card-base card-ability opponent-card"
+            )}
           </div>
-
           <div className="card-row">
-            <div className="card-base pile-start">{gameState.players[oponentIndex].mainPile.top}</div>
-            <div className="card-base pile-discard">{gameState.players[oponentIndex].discardPiles[0].top}</div>
-            <div className="card-base pile-discard">{gameState.players[oponentIndex].discardPiles[1].top}</div>
-            <div className="card-base pile-discard">{gameState.players[oponentIndex].discardPiles[2].top}</div>
-            <div className="card-base pile-discard">{gameState.players[oponentIndex].discardPiles[3].top}</div>
+            {renderImage(
+              gameState.players[oponentIndex]?.mainPile?.top || 0,
+              "card-base pile-start opponent-card"
+            )}
+            {renderImage(
+              gameState.players[oponentIndex]?.discardPiles?.[0]?.top || 0,
+              "card-base pile-discard opponent-card"
+            )}
+            {renderImage(
+              gameState.players[oponentIndex]?.discardPiles?.[1]?.top || 0,
+              "card-base pile-discard opponent-card"
+            )}
+            {renderImage(
+              gameState.players[oponentIndex]?.discardPiles?.[2]?.top || 0,
+              "card-base pile-discard opponent-card"
+            )}
+            {renderImage(
+              gameState.players[oponentIndex]?.discardPiles?.[3]?.top || 0,
+              "card-base pile-discard opponent-card"
+            )}
           </div>
         </div>
 
         {/* Pilas de construcción al centro */}
         <div className="center-piles">
-          <div className="card-base pile-build">{gameState.constructionPiles[0].top}</div>
-          <div className="card-base pile-build">{gameState.constructionPiles[1].top}</div>
-          <div className="card-base pile-build">{gameState.constructionPiles[2].top}</div>
-          <div className="card-base pile-build">{gameState.constructionPiles[3].top}</div>
-          <button className="card-base card-skipbo" onClick={handleDraw}>
+          {gameState.constructionPiles.map((pile, index) => (
+            <div
+              key={index}
+              onClick={() => {
+                if (origin === 'DiscardPile' && originValue !== null) {
+                  handler.handleSelection('ConstructionPile', index, origin, originValue);
+                  setOrigin(null);
+                  setOriginValue(null);
+                } else {
+                  handler.handleSelection('ConstructionPile', index, origin, originValue, origin === 'Hand' ? playerState?.hand?.content : null)
+                }
+              }}
+            >
+              {renderImage(pile.top || 0, "card-base")}
+            </div>
+          ))}
+          <button className="card-base card-skipbo" onClick={() => { handler.handleDraw() }}>
             Skip-Bo
           </button>
         </div>
 
         {/* Jugador actual */}
         <div className="player">
-          <div className="player-name">{user.nick}</div>
-
+          <div className="player-name">{user?.nick || 'Jugador'}</div>
           <div className="card-row">
-            <div className="card-base pile-start">{playerState === null ? 0 : playerState.mainPile.top}</div>
-            <div className="card-base pile-discard">{playerState === null ? 0 : playerState.discardPiles[0].top}</div>
-            <div className="card-base pile-discard">{playerState === null ? 0 : playerState.discardPiles[1].top}</div>
-            <div className="card-base pile-discard">{playerState === null ? 0 : playerState.discardPiles[2].top}</div>
-            <div className="card-base pile-discard">{playerState === null ? 0 : playerState.discardPiles[3].top}</div>
+            <div
+              className={`${origin === 'MainPile' && originValue ? ' selected' : ''}`}
+              onClick={() => {
+                handler.handleSelection('MainPile', !originValue, origin, originValue)
+              }}
+            >
+              {renderImage(playerState?.mainPile?.top || 0, "card-base pile-start")}
+            </div>
+            {[0, 1, 2, 3].map((index) => (
+              <div
+                key={index}
+                className={`${origin === 'DiscardPile' && originValue === index ? ' selected' : ''}`}
+                onClick={() => {
+                  if (origin === 'Hand' && originValue !== null) {
+                    // Si hay carta de la mano seleccionada, mueve de la mano a la discard pile
+                    handler.handleSelection('DiscardPile', index, origin, originValue, playerState?.hand?.content);
+                    setOrigin(null);
+                    setOriginValue(null);
+                  } else {
+                    // Si no, selecciona la discard pile como origen para mover a construction pile
+                    setOrigin('DiscardPile');
+                    setOriginValue(index);
+                  }
+                }}               
+              >
+                {renderImage(playerState?.discardPiles?.[index]?.top || 0, "card-base pile-discard")}
+              </div>
+            ))}
           </div>
-
           <div className="card-row">
-            <div className="card-base card-red">{playerState === null ? 0 : playerState.hand.content.length >= 1 ? playerState.hand.content[0] : 0}</div>
-            <div className="card-base card-red">{playerState === null ? 0 : playerState.hand.content.length >= 2 ? playerState.hand.content[1] : 0}</div>
-            <div className="card-base card-red">{playerState === null ? 0 : playerState.hand.content.length >= 3 ? playerState.hand.content[2] : 0}</div>
-            <div className="card-base card-red">{playerState === null ? 0 : playerState.hand.content.length >= 4 ? playerState.hand.content[3] : 0}</div>
-            <div className="card-base card-red">{playerState === null ? 0 : playerState.hand.content.length >= 5 ? playerState.hand.content[4] : 0}</div>
+            {playerState?.hand?.content?.length > 0 ? (
+              playerState.hand.content.map((card, index) => (
+                <div
+                  key={index}
+                  className={`${origin === 'Hand' && originValue === index ? ' selected' : ''}`}
+                  onClick={() => handler.handleSelection('Hand', index, origin, originValue)}
+                >
+                  {renderImage(card, "card-base card-red")}
+                </div>
+              ))
+            ) : (
+              Array(5).fill(0).map((_, index) => (
+                <div key={index}>
+                  {renderImage(0, "card-base card-red")}
+                </div>
+              ))
+            )}
           </div>
-
           <div className="card-row">
-            <div className="card-base card-ability">{playerState === null ? 0 : Object.keys(playerState.skills.content).length === 0 ? 0 : Object.keys(playerState.skills.content)}</div>
-            <div className="card-base card-ability">{playerState === null ? 0 : Object.keys(playerState.skills.content).length === 0 ? 0 : Object.keys(playerState.skills.content)}</div>
+            {renderImage(
+              playerState?.skills?.content?.[0] || 0,
+              "card-base card-ability"
+            )}
+            {renderImage(
+              playerState?.skills?.content?.[1] || 0,
+              "card-base card-ability"
+            )}
           </div>
         </div>
-
+      </div>
+      <div className="side right">
+        <button className="exit-button" onClick={() => navigate('/')}>
+          Salir del juego
+        </button>
       </div>
     </div>
   );
 };
 
 export default Play;
+

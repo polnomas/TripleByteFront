@@ -128,3 +128,8 @@ body {
   padding: 20px;
   justify-content: center; 
 }
+
+.card-base.card-red.selected {
+  border: 2px solid #ffeb3b; 
+  box-sizing: border-box;
+}
